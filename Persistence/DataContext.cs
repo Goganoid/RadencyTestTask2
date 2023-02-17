@@ -1,18 +1,18 @@
 using Domain;
 using Microsoft.EntityFrameworkCore;
+
 namespace Persistence;
 
 public class DataContext : DbContext
 {
-    public DataContext(DbContextOptions options):base(options)
+    public DataContext(DbContextOptions options) : base(options)
     {
-        
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
-        optionsBuilder.UseInMemoryDatabase(databaseName:"BookStore");
+        optionsBuilder.UseInMemoryDatabase("BookStore");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,4 +1,3 @@
-using Application.Books.DTO;
 using Application.Books.DTO.Requests;
 using Application.Books.DTO.Responses;
 using AutoMapper;
@@ -13,8 +12,7 @@ public class MappingProfiles : Profile
         // Output DTOs
         CreateMap<Book, ListedBookResponseDTO>()
             .ForMember(dto => dto.Rating,
-                opt => opt
-                    .MapFrom(b => b.AverageScore()))
+                opt => opt.MapFrom(b => b.AverageScore()))
             .ForMember(dto => dto.Reviews,
                 opt => opt.MapFrom(b => b.Reviews.Count));
         CreateMap<Book, BookDetailsResponseDTO>()
@@ -23,7 +21,7 @@ public class MappingProfiles : Profile
         CreateMap<Review, ReviewResponseDTO>();
         CreateMap<Review, IdResponseDTO>();
         CreateMap<Book, IdResponseDTO>();
-        
+
         // Input DTOs
         CreateMap<SaveBookRequestDTO, Book>();
         CreateMap<SaveReviewRequestDTO, Review>();

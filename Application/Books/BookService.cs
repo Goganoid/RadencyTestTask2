@@ -1,4 +1,3 @@
-using Application.Books.DTO;
 using Application.Books.DTO.Requests;
 using Application.Books.DTO.Responses;
 using Application.Core.Exceptions;
@@ -6,13 +5,14 @@ using AutoMapper;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using static Domain.BookExtensions;
+
 namespace Application.Books;
 
 public class BookService : IBookService
 {
     private readonly DataContext _dataContext;
     private readonly IMapper _mapper;
+
     public BookService(DataContext dataContext, IMapper mapper)
     {
         _dataContext = dataContext;
@@ -21,28 +21,32 @@ public class BookService : IBookService
 
     public async Task<IEnumerable<ListedBookResponseDTO>> GetBooks(BookOrderOptions bookOrder)
     {
-        Func<Book, string> selectOrderProperty = book => bookOrder switch
+        string SelectOrderProperty(Book book)
         {
-            BookOrderOptions.Author => book.Author,
-            BookOrderOptions.Title => book.Title,
-            _=> throw new BadRequestException("Invalid query parameter")
-        };
+            return bookOrder switch
+            {
+                BookOrderOptions.Author => book.Author,
+                BookOrderOptions.Title => book.Title,
+                _ => throw new BadRequestException("Invalid query parameter")
+            };
+        }
+
         var books = await _dataContext.Books.ToListAsync();
-        return books.OrderBy(b =>selectOrderProperty(b)).Select(b=>_mapper.Map<ListedBookResponseDTO>(b));
+        return books.OrderBy(SelectOrderProperty).Select(b => _mapper.Map<ListedBookResponseDTO>(b));
     }
 
-    public async Task<IEnumerable<ListedBookResponseDTO>> GetRecommendedBooks(string genre)
+    public async Task<IEnumerable<ListedBookResponseDTO>> GetRecommendedBooks(string? genre)
     {
-        if (Constants.Genres.Find(g => string.Equals(g, genre)) == null)
-        {
+        if (genre != null && Constants.Genres.Find(g => string.Equals(g, genre)) == null)
             throw new NotFoundException("Genre not found");
-        }
+
         var books = await _dataContext.Books
             .Where(b => b.Reviews.Count > 10)
-            .Where(b=>string.Equals(b.Genre,genre,StringComparison.OrdinalIgnoreCase))
-            .OrderByDescending(b => b.Ratings.Count>0 ? b.Ratings.Average(r=>r.Score) : 0)
+            .Where(b => genre == null ||
+                        string.Equals(b.Genre, genre, StringComparison.OrdinalIgnoreCase))
+            .OrderByDescending(b => b.Ratings.Count > 0 ? b.Ratings.Average(r => r.Score) : 0)
             .Take(10)
-            .Select(b=>_mapper.Map<ListedBookResponseDTO>(b))
+            .Select(b => _mapper.Map<ListedBookResponseDTO>(b))
             .ToListAsync();
         return books;
     }
@@ -64,7 +68,7 @@ public class BookService : IBookService
     {
         var book = _mapper.Map<Book>(bookDTO);
         var existingBook = await _dataContext.Books.FirstOrDefaultAsync(b => b.Id == bookDTO.Id);
-        if (existingBook!= null)
+        if (existingBook != null)
         {
             existingBook.Author = book.Author;
             existingBook.Content = book.Content;
@@ -77,6 +81,7 @@ public class BookService : IBookService
         {
             await _dataContext.Books.AddAsync(book);
         }
+
         await _dataContext.SaveChangesAsync();
         return _mapper.Map<IdResponseDTO>(book);
     }
@@ -101,11 +106,7 @@ public class BookService : IBookService
     private async Task<Book> GetBook(int bookId)
     {
         var book = await _dataContext.Books.FirstOrDefaultAsync(b => b.Id == bookId);
-        if (book == null)
-        {
-            throw new NotFoundException("Book with given ID was not found");
-        }
-
+        if (book == null) throw new NotFoundException("Book with the given ID was not found");
         return book;
     }
 }

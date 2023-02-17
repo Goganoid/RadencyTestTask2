@@ -13,5 +13,5 @@ public static class Constants
         // "Thriller",
         // "Hystorical Fiction",
         "Science"
-    };   
+    };
 }

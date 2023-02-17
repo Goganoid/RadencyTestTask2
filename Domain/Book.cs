@@ -17,9 +17,8 @@ public class Book
 
 public static class BookExtensions
 {
-    public static Expression<Func<Book,double>> AverageScore()
+    public static double AverageScore(this Book book)
     {
-        return book => book.Ratings.Count > 0 ? book.Ratings.Average(b => b.Score) : 0;
+        return book.Ratings.Count > 0 ? Math.Round(book.Ratings.Average(b => b.Score), 2) : 0;
     }
-    public static double AverageScore(this Book book) => book.Ratings.Count>0 ? Math.Round(book.Ratings.Average(b => b.Score),2) : 0;
 }
