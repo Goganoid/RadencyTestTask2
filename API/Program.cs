@@ -54,8 +54,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpLogging();
 app.ConfigureExceptionHandler();
-app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();
