@@ -1,4 +1,6 @@
 using Application.Books.DTO;
+using Application.Books.DTO.Requests;
+using Application.Books.DTO.Responses;
 using AutoMapper;
 using Domain;
 

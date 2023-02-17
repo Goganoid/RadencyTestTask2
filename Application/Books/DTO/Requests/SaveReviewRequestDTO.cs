@@ -1,4 +1,4 @@
-namespace Application.Books.DTO;
+namespace Application.Books.DTO.Requests;
 
 public class SaveReviewRequestDTO
 {

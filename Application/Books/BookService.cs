@@ -1,4 +1,6 @@
 using Application.Books.DTO;
+using Application.Books.DTO.Requests;
+using Application.Books.DTO.Responses;
 using Application.Core.Exceptions;
 using AutoMapper;
 using Domain;
@@ -60,11 +62,21 @@ public class BookService : IBookService
 
     public async Task<IdResponseDTO> SaveBook(SaveBookRequestDTO bookDTO)
     {
-        if (bookDTO.Id != null &&
-            await _dataContext.Books.FirstOrDefaultAsync(b => b.Id == bookDTO.Id) != null)
-            throw new ConflictException("Book with given ID already exists");
         var book = _mapper.Map<Book>(bookDTO);
-        await _dataContext.Books.AddAsync(book);
+        var existingBook = await _dataContext.Books.FirstOrDefaultAsync(b => b.Id == bookDTO.Id);
+        if (existingBook!= null)
+        {
+            existingBook.Author = book.Author;
+            existingBook.Content = book.Content;
+            existingBook.Cover = book.Cover;
+            existingBook.Genre = book.Genre;
+            existingBook.Title = book.Title;
+            _dataContext.Books.Update(existingBook);
+        }
+        else
+        {
+            await _dataContext.Books.AddAsync(book);
+        }
         await _dataContext.SaveChangesAsync();
         return _mapper.Map<IdResponseDTO>(book);
     }

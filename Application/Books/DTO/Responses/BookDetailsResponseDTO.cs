@@ -1,7 +1,4 @@
-using Domain;
-using Persistence;
-
-namespace Application.Books.DTO;
+namespace Application.Books.DTO.Responses;
 
 public class BookDetailsResponseDTO
 {
