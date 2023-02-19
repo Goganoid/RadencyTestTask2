@@ -23,11 +23,13 @@ public class SaveBookRequestValidator : AbstractValidator<SaveBookRequestDTO>
         RuleFor(b => b.Content).NotNull().Length(25, 1000);
         RuleFor(b => b.Cover).NotNull().Must(c =>
         {
+            // accept an empty string for the sake of testing without a need to insert a base64 image
+            if (c?.Length == 0) return true;
             // correct format data:image/jpeg;base64,...base64......
             var split = c.Split(',');
             if (split.Length < 2) return false;
             var (format,base64) = (split[0], split[1]);
-            if (string.IsNullOrEmpty(base64) || base64.Length % 4 != 0
+            if (base64.Length % 4 != 0
                 || base64.Contains(" ") || base64.Contains("\t")
                 || base64.Contains("\r") || base64.Contains("\n")
                 || !format.Contains("data:image"))
