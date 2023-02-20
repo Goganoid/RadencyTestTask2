@@ -5,6 +5,11 @@ You can import a postman collection from `postman.json`
 cd API/
 dotnet run --launch-profile http 
 ```
+## Starting the client server
+```
+cd ClientApp/
+ng serve --open
+```
 ## Available genres
 ```
 {
@@ -14,6 +19,3 @@ dotnet run --launch-profile http
         "Fantasy",
         "Science"
 }
-```
-## Notes
-Save book request validates base64 image, you can try it using this [converter](https://www.base64-image.de/). However, there is an option to insert an empty string `""`.
