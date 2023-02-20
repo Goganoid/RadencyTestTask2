@@ -24,3 +24,24 @@
     justify-content: center;
     gap: 40px;
 }
+
+@media screen and (max-width:515px) {
+    .edit-book-container{
+        border: 1px solid black;
+        border-radius: 10px;
+        padding: 10px;
+        max-height: none;
+    }
+    .input-fields-container form{
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: stretch;
+        height: 80%;
+    }
+    .form-controls{
+        height: 20%;
+    }
+    .input-fields-container{
+        height: 100%;
+    }
+}

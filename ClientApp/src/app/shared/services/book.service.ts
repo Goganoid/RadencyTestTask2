@@ -37,7 +37,6 @@ export class BookService {
       }));
   }
   saveBook(bookModel: SaveBook): Observable<IdResponse> {
-    console.log(JSON.stringify(bookModel));
     return this.httpClient
       .post<IdResponse>(this.baseApiUri + "books/save", JSON.stringify(bookModel), {
       headers: new HttpHeaders({

@@ -1,9 +1,7 @@
-import { BookListItem } from './../../shared/models/BookListItems';
 import { Component, OnInit } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { BookService } from 'src/app/shared/services/book.service';
-import { stringCompare } from './helpers/sortAlphabetically';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { BookListItem } from './../../shared/models/BookListItems';
 
 @Component({
   selector: 'app-books-page',

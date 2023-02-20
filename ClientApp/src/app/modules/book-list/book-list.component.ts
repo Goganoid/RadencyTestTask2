@@ -17,7 +17,6 @@ export class BookListComponent implements OnInit {
   constructor(private bookService: BookService) { }
 
   setEmitId(id: number) {
-    console.log(`Received id ${id} in book-list`);
     this.idEmitter.emit(id);
   }
 

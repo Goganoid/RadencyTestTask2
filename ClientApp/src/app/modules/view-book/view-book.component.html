@@ -18,11 +18,12 @@
       <div class="reviews-container">
         <span *ngIf="book.reviews.length==0; else reviews">No reviews :(</span>
         <ng-template #reviews>
-          <div *ngFor="let review of book.reviews">
+          <div *ngFor="let review of book.reviews" class="review">
             <div>
               <h2>{{review.reviewer}}</h2>
               <p>{{review.message}}</p>
             </div>
+            <mat-divider/>
           </div>
         </ng-template>
       </div>

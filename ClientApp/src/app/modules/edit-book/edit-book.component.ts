@@ -53,7 +53,6 @@ export class EditBookComponent implements OnChanges {
     reader.onloadend = () => {
       const base64Img = reader.result! as string;
       const book = this.constructSaveBookModel(base64Img);
-      console.log(book);
       this.bookService.saveBook(book).subscribe(response => {
         console.log(`Saved book successfully. Book id:${response.id}`);
         this.updateListEmitter.emit();

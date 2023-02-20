@@ -4,16 +4,23 @@
     gap:20px;
     overflow-y: scroll;
     padding: 20px 0;
-    /* max-height: 50%; */
     flex:1
 }
 .book-list-container{
     max-height: 45vh;
     display: flex;
-    /* overflow-y: hidden; */
 }
 .spinner-container{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+@media screen and (max-width:700px) {
+    .list{
+        grid-template-columns: 1fr;
+    }
+    .book-list-container{
+        max-height: 90vh;
+    }
 }
