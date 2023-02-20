@@ -11,8 +11,8 @@ import { Observable } from 'rxjs';
 export class BookListComponent implements OnInit {
 
   @Output() idEmitter: EventEmitter<number> = new EventEmitter<number>;
-  books$: Observable<BookListItem[]> | undefined;
-  recommendedBooks$: Observable<BookListItem[]> | undefined;
+  @Input() books$: Observable<BookListItem[]> | undefined;
+  @Input() recommendedBooks$: Observable<BookListItem[]> | undefined;
 
   constructor(private bookService: BookService) { }
 

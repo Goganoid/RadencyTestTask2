@@ -1,2 +1,2 @@
-<app-edit-book [editId]="id"></app-edit-book>
-<app-book-list (idEmitter)="setEmitId($event)"></app-book-list>
+<app-edit-book [editId]="id" (updateListEmitter)="updateList()"></app-edit-book>
+<app-book-list (idEmitter)="setEmitId($event)" [books$]="books$" [recommendedBooks$]="recommendedBooks$"></app-book-list>

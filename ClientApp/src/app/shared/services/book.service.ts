@@ -1,10 +1,10 @@
-import { SaveBook } from './../models/SaveBook';
-import { BookListItem } from './../models/BookListItems';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BookDetails } from '../models/BookDetails';
 import { IdResponse } from '../models/IdResponse';
+import { BookListItem } from './../models/BookListItems';
+import { SaveBook } from './../models/SaveBook';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class BookService {
   private baseApiUri = 'http://localhost:5000/api/';
   constructor(private httpClient: HttpClient) { }
   getBooks(): Observable<BookListItem[]> {
-    return this.httpClient.get<BookListItem[]>(this.baseApiUri + 'books');
+    return this.httpClient.get<BookListItem[]>(this.baseApiUri + 'books?order=title');
   }
   getRecommendedBooks(): Observable<BookListItem[]> {
     return this.httpClient.get<BookListItem[]>(this.baseApiUri + 'books/recommended');
