@@ -1,0 +1,19 @@
+.list{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap:20px;
+    overflow-y: scroll;
+    padding: 20px 0;
+    /* max-height: 50%; */
+    flex:1
+}
+.book-list-container{
+    max-height: 45vh;
+    display: flex;
+    /* overflow-y: hidden; */
+}
+.spinner-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

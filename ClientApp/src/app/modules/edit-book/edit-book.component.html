@@ -1,0 +1,59 @@
+<div class="edit-book-container">
+    <h2>Add Book</h2>
+    <mat-divider></mat-divider>
+    <div class="input-fields-container">
+        <form [formGroup]="formGroup">
+            <div class="left-side-inputs">
+                <p>
+                    <mat-form-field class="input-field"  appearance="fill">
+                        <mat-label>Title</mat-label>
+                        <input matInput formControlName="title">
+                        <mat-error>
+                            <app-error-message [control]="formGroup.controls['title']" />
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Choose a genre</mat-label>
+                        <mat-select formControlName="genre" required>
+                            <mat-option>--</mat-option>
+                            <mat-option *ngFor="let genre of genres" [value]="genre">{{genre}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="formGroup.controls['genre'].hasError('required')">Please choose a genre</mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field class="input-field">
+                        <mat-label>Author</mat-label>
+                        <input matInput formControlName="author">
+                        <mat-error>
+                            <app-error-message [control]="formGroup.controls['author']" />
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <input #image_input
+                     hidden="true" type="file" onclick="this.value=null" (change)="imgInputChange($event)" accept="image/png, image/jpeg"/>
+                    <button mat-flat-button color="primary" (click)="image_input.click()" type="button">Choose cover image</button>
+                    <mat-error>
+                        <app-error-message [control]="formGroup.controls['file']" />
+                    </mat-error>
+                </p>
+            </div>
+            <div class="right-side-inputs">
+                <mat-form-field class="input-field">
+                    <mat-label>Content</mat-label>
+                    <textarea matInput formControlName="content"></textarea>
+                    <mat-error>
+                        <app-error-message [control]="formGroup.controls['content']" />
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </form>
+        <div class="form-controls">
+            <button mat-flat-button color="primary" (click)="submit()">Submit</button>
+            <button mat-flat-button color="accent">Cancel</button>
+        </div>
+    </div>
+</div>

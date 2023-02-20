@@ -1,0 +1,5 @@
+.book-info{
+    display: flex;
+    justify-content: space-around;
+    margin: 0 25%;
+}

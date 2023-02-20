@@ -1,0 +1,26 @@
+.edit-book-container{
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    max-height: 50vh;
+}
+.input-fields-container{
+    margin: 10px 0;
+}
+.input-fields-container form {
+    padding: 0 15%;
+    display: flex;
+    justify-content: space-around;
+    gap: 0 40px;
+}
+.left-side-inputs,.right-side-inputs{
+    flex:1
+}
+.input-field{
+    width: 100%;
+}
+.form-controls{
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}

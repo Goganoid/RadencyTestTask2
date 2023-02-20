@@ -1,0 +1,6 @@
+<ng-container *ngIf="control && control.errors && (control.dirty || control.touched)">
+    <ng-container *ngIf="control.errors.required">This field is required</ng-container>
+    <ng-container *ngIf="control.errors.minlength">Too short</ng-container>
+    <ng-container *ngIf="control.errors.maxlength">Too long</ng-container>
+    <ng-container *ngIf="control.errors.maxSize">The file is too big</ng-container>
+</ng-container>

@@ -34,6 +34,13 @@ builder.Services.AddHttpLogging(logging =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policyBuilder =>
+    {
+        policyBuilder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 // seed database
@@ -55,7 +62,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpLogging();
 app.ConfigureExceptionHandler();
 app.UseAuthorization();
-
+app.UseCors();
 app.MapControllers();
 
 app.Run();
