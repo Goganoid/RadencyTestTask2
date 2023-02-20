@@ -12,10 +12,9 @@
 .book-stats{
     display: flex;
     justify-content: space-around;
-    margin: 0 25%;
+    gap: 10px 20px;
 }
 .book-info{
-   
     height: 400px;
     overflow-y: scroll;
 }
