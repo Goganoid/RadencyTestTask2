@@ -20,7 +20,7 @@ public class SaveBookRequestValidator : AbstractValidator<SaveBookRequestDTO>
             .When(b => b.Id != null)
             .WithMessage("The book with given id does not exist");
         RuleFor(b => b.Author).NotNull().Length(4, 50);
-        RuleFor(b => b.Content).NotNull().Length(25, 1000);
+        RuleFor(b => b.Content).NotNull().Length(25, 3000);
         RuleFor(b => b.Cover).NotNull().Must(c =>
         {
             // accept an empty string for the sake of testing without a need to insert a base64 image

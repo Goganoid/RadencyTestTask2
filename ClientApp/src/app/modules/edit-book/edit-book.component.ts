@@ -14,16 +14,23 @@ import { SaveBook } from './../../shared/models/SaveBook';
   templateUrl: './edit-book.component.html',
   styleUrls: ['./edit-book.component.css']
 })
-export class EditBookComponent implements OnChanges {
-
-  @Input() editId: number | undefined;
+export class EditBookComponent {
+  editId: number | undefined;
+  @Output() resetEditId = new EventEmitter();
+  @Input() set setEditId(val: number | undefined) {
+    this.editId = val;
+    if (this.editId == undefined) return;
+    this.bookService.getBook(this.editId!).subscribe(bookDetails => {
+      this.setBook(bookDetails);
+    });
+  }
   @Output() updateListEmitter = new EventEmitter();
   public genres = genreOptions;
   public formGroup = new FormGroup({
     'title': new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]),
     'genre': new FormControl<string | null>(null, [Validators.required]),
     'author': new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]),
-    'content': new FormControl('', [Validators.required, Validators.minLength(25), Validators.maxLength(1000)]),
+    'content': new FormControl('', [Validators.required, Validators.minLength(25), Validators.maxLength(3000)]),
     'file': new FormControl<any | null>(null, [
       Validators.required,
       // 2 MB
@@ -33,12 +40,12 @@ export class EditBookComponent implements OnChanges {
 
   constructor(private bookService: BookService, private snackBar: MatSnackBar) { }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['editId'].isFirstChange() || changes['editId'].currentValue == undefined) return;
-    this.bookService.getBook(this.editId!).subscribe(bookDetails => {
-      this.setBook(bookDetails);
-    });
-  }
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   if (changes['editId'].isFirstChange() || changes['editId'].currentValue == undefined) return;
+  //   this.bookService.getBook(this.editId!).subscribe(bookDetails => {
+  //     this.setBook(bookDetails);
+  //   });
+  // }
 
   public imgInputChange(fileInputEvent: any) {
     this.formGroup.controls['file'].markAllAsTouched();
@@ -63,7 +70,7 @@ export class EditBookComponent implements OnChanges {
   }
   public resetForm() {
     this.formGroup.reset();
-    this.editId = undefined;
+    this.resetEditId.emit();
   }
   private constructSaveBookModel(base64Img: string): SaveBook {
     return {

@@ -9,7 +9,7 @@
         </mat-tab>
         <mat-tab label="Recommended">
             <div class="list" *ngIf="recommendedBooks$ | async as books; else loading">
-                <app-book-list-item  *ngFor="let book of books " [book]="book"/>
+                <app-book-list-item  *ngFor="let book of books " [book]="book" (idEmitter)="setEmitId($event)"/>
             </div>
         </mat-tab>
     </mat-tab-group>

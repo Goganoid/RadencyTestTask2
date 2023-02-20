@@ -16,16 +16,19 @@ export class BooksPageComponent implements OnInit {
 
   constructor(private bookService: BookService) { }
   
-  setEmitId(id: number) {
+  public setEmitId(id: number) {
     this.id = id;
   }
+  public resetEditId() {
+    this.id = undefined;
+  }
   ngOnInit(): void {
-    this.books$ = this.bookService.getBooks();
-    this.recommendedBooks$ = this.bookService.getRecommendedBooks();
+    this.updateLists();
   }
 
-  updateList(): void{
+  updateLists(): void{
     console.log("Updating the books list");
     this.books$ = this.bookService.getBooks();
+    this.recommendedBooks$ = this.bookService.getRecommendedBooks();
   }
 }
