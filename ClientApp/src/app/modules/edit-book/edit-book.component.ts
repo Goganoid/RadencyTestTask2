@@ -2,6 +2,7 @@ import { MaxSizeValidator } from '@angular-material-components/file-input';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { SnackBarError } from 'src/app/shared/config/snackbar.config';
 import { ValidationError } from 'src/app/shared/models/ValidationError';
 import { BookService } from 'src/app/shared/services/book.service';
 import { genreOptions } from 'src/assets/constants';
@@ -47,24 +48,23 @@ export class EditBookComponent implements OnChanges {
   public submit() {
     this.formGroup.markAllAsTouched();
     if (!this.formGroup.valid) return;
-
     let reader = new FileReader();
     // send request after converting the image to base64
     reader.onloadend = () => {
       const base64Img = reader.result! as string;
       const book = this.constructSaveBookModel(base64Img);
       console.log(book);
-      this.bookService.saveBook(book).subscribe(
-        {
-          next: response => {
-            console.log(`Saved book successfully. Book id:${response.body?.id}`);
-            this.updateListEmitter.emit();
-            this.resetForm();
-          },
-          error: errorResponse => this.showError(errorResponse)
-        });
-      reader.readAsDataURL(this.formGroup.controls['file'].value);
+      this.bookService.saveBook(book).subscribe(response => {
+        console.log(`Saved book successfully. Book id:${response.id}`);
+        this.updateListEmitter.emit();
+        this.resetForm();
+      });
     }
+      reader.readAsDataURL(this.formGroup.controls['file'].value);
+  }
+  public resetForm() {
+    this.formGroup.reset();
+    this.editId = undefined;
   }
   private constructSaveBookModel(base64Img: string): SaveBook {
     return {
@@ -76,10 +76,7 @@ export class EditBookComponent implements OnChanges {
       id: this.editId
     } as SaveBook
   }
-  private resetForm() {
-    this.formGroup.reset();
-    this.editId = undefined;
-  }
+  
   private setBook(bookDetails: BookDetails) {
     this.formGroup.patchValue({
       'title': bookDetails.title,
@@ -96,14 +93,5 @@ export class EditBookComponent implements OnChanges {
           'file': file
         });
       })
-  }
-  private showError(errorResponse: any) {
-    console.log('Error while saving the book');
-    console.log(errorResponse);
-    const errors = errorResponse?.error as ValidationError[];
-    const errorMessage = (errors != null && errors.length > 0) ? errors[0].errorMessage : errorResponse.statusText;
-    this.snackBar.open(errorMessage, 'Close', {
-      duration: 2500,
-    })
   }
 }

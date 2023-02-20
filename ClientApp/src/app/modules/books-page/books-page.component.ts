@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { BookService } from 'src/app/shared/services/book.service';
 import { stringCompare } from './helpers/sortAlphabetically';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-books-page',
@@ -10,15 +11,14 @@ import { stringCompare } from './helpers/sortAlphabetically';
   styleUrls: ['./books-page.component.css']
 })
 export class BooksPageComponent implements OnInit {
-  id: number | undefined;
+  public id: number | undefined;
 
-  books$: Observable<BookListItem[]> | undefined;
-  recommendedBooks$: Observable<BookListItem[]> | undefined;
+  public books$: Observable<BookListItem[]> | undefined;
+  public recommendedBooks$: Observable<BookListItem[]> | undefined;
 
   constructor(private bookService: BookService) { }
   
   setEmitId(id: number) {
-    console.log(`Received id ${id}`)
     this.id = id;
   }
   ngOnInit(): void {
@@ -27,7 +27,7 @@ export class BooksPageComponent implements OnInit {
   }
 
   updateList(): void{
-    console.log("received update request");
+    console.log("Updating the books list");
     this.books$ = this.bookService.getBooks();
   }
 }

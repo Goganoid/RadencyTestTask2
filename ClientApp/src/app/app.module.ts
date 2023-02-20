@@ -51,7 +51,7 @@ import { ErrorMessageComponent } from './modules/edit-book/components/error-mess
     MatFormFieldModule,
     HttpClientModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
