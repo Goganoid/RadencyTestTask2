@@ -1,4 +1,4 @@
-# RadencyTestTask2
+# RadencyTestTask3
 You can import a postman collection from `postman.json`
 ## Starting the server
 ```
