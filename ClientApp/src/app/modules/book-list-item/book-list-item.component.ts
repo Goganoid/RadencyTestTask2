@@ -3,6 +3,7 @@ import { BookListComponent } from './../book-list/book-list.component';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewBookComponent } from '../view-book/view-book.component';
+import { ImageSanitizerService } from 'src/app/shared/services/image-sanitizer.service';
 
 
 export interface ModalData{
@@ -19,7 +20,7 @@ export class BookListItemComponent {
   @Output() idEmitter: EventEmitter<number> = new EventEmitter<number>;
   @Input() book:BookListItem | undefined;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, public imageSanitizer: ImageSanitizerService) {}
 
   setEditId(id: number) {
     this.idEmitter.emit(id);

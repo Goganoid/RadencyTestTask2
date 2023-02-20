@@ -1,7 +1,7 @@
 <mat-card appearance="raised">
     <mat-card-header>
         <mat-card-title-group>
-            <img mat-card-sm-image src="https://material.angular.io/assets/img/examples/shiba2.jpg">
+            <img mat-card-sm-image [src]="imageSanitizer.sanitizeImage(book?.cover!)">
             <mat-card-title>{{book?.title}}</mat-card-title>
             <mat-card-subtitle>{{book?.author}}</mat-card-subtitle>
         </mat-card-title-group>

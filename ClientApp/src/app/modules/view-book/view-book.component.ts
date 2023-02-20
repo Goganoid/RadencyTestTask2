@@ -6,6 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BookListItem } from 'src/app/shared/models/BookListItems';
 import { Observable } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ImageSanitizerService } from 'src/app/shared/services/image-sanitizer.service';
 
 @Component({
   selector: 'app-view-book',
@@ -16,14 +17,11 @@ export class ViewBookComponent {
   public book$: Observable<BookDetails> | undefined;
   constructor(
     private bookService: BookService,
-    private sanitizer:DomSanitizer,
+    public imageSanitizer: ImageSanitizerService,
     public dialogRef: MatDialogRef<ViewBookComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ModalData,
   ) {
     this.book$ = this.bookService.getBook(this.data.bookId);
-  }
-  public sanitizeImage(base64img:string) {
-    return this.sanitizer.bypassSecurityTrustUrl(base64img);
   }
   onCloseClick(): void {
     this.dialogRef.close();

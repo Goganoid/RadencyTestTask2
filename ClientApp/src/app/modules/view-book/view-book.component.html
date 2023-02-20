@@ -2,7 +2,7 @@
   <div *ngIf="book$ | async as book; else loading">
       <div class="book-container">
         <div class="book-container-left">
-          <img alt="" [src]="sanitizeImage(book.cover)" class="book-cover">
+          <img alt="" [src]="imageSanitizer.sanitizeImage(book.cover)" class="book-cover">
           <div class="book-stats">
             <span>Rating:{{book.rating}}</span>
             <span>Reviews:{{book.reviews.length}}</span>
