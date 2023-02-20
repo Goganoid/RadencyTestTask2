@@ -12,7 +12,7 @@ import { BookDetails } from './../../shared/models/BookDetails';
   styleUrls: ['./edit-book.component.css']
 })
 export class EditBookComponent {
-  editId: number | undefined;
+  public editId: number | undefined;
   @Output() resetEditId = new EventEmitter();
   @Input() set setEditId(val: number | undefined) {
     this.editId = val;
