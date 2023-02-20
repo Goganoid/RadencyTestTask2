@@ -6,7 +6,7 @@ import { ViewBookComponent } from '../view-book/view-book.component';
 
 
 export interface ModalData{
-  book: string;
+  bookId:number
 }
 
 @Component({
@@ -22,17 +22,12 @@ export class BookListItemComponent {
   constructor(public dialog: MatDialog) {}
 
   setEditId(id: number) {
-    console.log("Click");
     this.idEmitter.emit(id);
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(ViewBookComponent, {
-      data: {book: this.book},
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+    this.dialog.open(ViewBookComponent, {
+      data: {bookId: this.book?.id},
     });
   }
 }

@@ -1,0 +1,27 @@
+.book-container{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+}
+.book-container-left{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.book-stats{
+    display: flex;
+    justify-content: space-around;
+    margin: 0 25%;
+}
+.book-info{
+   
+    height: 400px;
+    overflow-y: scroll;
+}
+.book-cover{
+    width: 300px;
+    height: 300px;
+}
+.reviews-container{
+    margin-top: 30px;
+}
