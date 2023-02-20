@@ -1,11 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BookDetails } from '../models/BookDetails';
 import { IdResponse } from '../models/IdResponse';
 import { BookListItem } from './../models/BookListItems';
 import { SaveBook } from './../models/SaveBook';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -22,9 +21,9 @@ export class BookService {
   getBook(id:number): Observable<BookDetails>{
     return this.httpClient.get<BookDetails>(this.baseApiUri + `books/${id}`);
   }
-  saveBook(bookModel: SaveBook): Observable<IdResponse> {
+  saveBook(bookModel: SaveBook): Observable<HttpResponse<IdResponse>> {
     console.log(JSON.stringify(bookModel));
-    return this.httpClient.post<IdResponse>(this.baseApiUri + "books/save", JSON.stringify(bookModel), {
+    return this.httpClient.post<HttpResponse<IdResponse>>(this.baseApiUri + "books/save", JSON.stringify(bookModel), {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       })

@@ -1,6 +1,8 @@
 import { MaxSizeValidator } from '@angular-material-components/file-input';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { ValidationError } from 'src/app/shared/models/ValidationError';
 import { BookService } from 'src/app/shared/services/book.service';
 import { genreOptions } from 'src/assets/constants';
 import { BookDetails } from './../../shared/models/BookDetails';
@@ -27,9 +29,9 @@ export class EditBookComponent implements OnChanges {
       MaxSizeValidator(2 * Math.pow(10, 6))
     ])
   });
-  
-  constructor(private bookService: BookService) { }
-  
+
+  constructor(private bookService: BookService, private snackBar: MatSnackBar) { }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['editId'].isFirstChange() || changes['editId'].currentValue == undefined) return;
     this.bookService.getBook(this.editId!).subscribe(bookDetails => {
@@ -40,26 +42,27 @@ export class EditBookComponent implements OnChanges {
   public imgInputChange(fileInputEvent: any) {
     this.formGroup.controls['file'].markAllAsTouched();
     this.formGroup.controls['file'].setValue(fileInputEvent.target.files[0]);
-    console.log(fileInputEvent.target.files[0]);
-    console.log(this.formGroup.controls['file'].errors);
   }
 
   public submit() {
     this.formGroup.markAllAsTouched();
-    if (this.formGroup.valid) {
-      console.log(this.formGroup);
-      let reader = new FileReader();
-      // send request after converting the image to base64
-      reader.onloadend = () => {
-        const base64Img = reader.result! as string;
-        const book = this.constructSaveBookModel(base64Img);
-        console.log(book);
-        this.bookService.saveBook(book).subscribe(newBookId => {
-          console.log(newBookId);
-          this.updateListEmitter.emit();
-          this.resetForm();
-        })
-      }
+    if (!this.formGroup.valid) return;
+
+    let reader = new FileReader();
+    // send request after converting the image to base64
+    reader.onloadend = () => {
+      const base64Img = reader.result! as string;
+      const book = this.constructSaveBookModel(base64Img);
+      console.log(book);
+      this.bookService.saveBook(book).subscribe(
+        {
+          next: response => {
+            console.log(`Saved book successfully. Book id:${response.body?.id}`);
+            this.updateListEmitter.emit();
+            this.resetForm();
+          },
+          error: errorResponse => this.showError(errorResponse)
+        });
       reader.readAsDataURL(this.formGroup.controls['file'].value);
     }
   }
@@ -77,7 +80,7 @@ export class EditBookComponent implements OnChanges {
     this.formGroup.reset();
     this.editId = undefined;
   }
-  private setBook(bookDetails:BookDetails) {
+  private setBook(bookDetails: BookDetails) {
     this.formGroup.patchValue({
       'title': bookDetails.title,
       'author': bookDetails.author,
@@ -93,5 +96,14 @@ export class EditBookComponent implements OnChanges {
           'file': file
         });
       })
+  }
+  private showError(errorResponse: any) {
+    console.log('Error while saving the book');
+    console.log(errorResponse);
+    const errors = errorResponse?.error as ValidationError[];
+    const errorMessage = (errors != null && errors.length > 0) ? errors[0].errorMessage : errorResponse.statusText;
+    this.snackBar.open(errorMessage, 'Close', {
+      duration: 2500,
+    })
   }
 }
