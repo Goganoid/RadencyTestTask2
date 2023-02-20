@@ -1,13 +1,12 @@
-import { BookListItem } from './../../shared/models/BookListItems';
-import { BookListComponent } from './../book-list/book-list.component';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ViewBookComponent } from '../view-book/view-book.component';
 import { ImageSanitizerService } from 'src/app/shared/services/image-sanitizer.service';
+import { ViewBookComponent } from '../view-book/view-book.component';
+import { BookListItem } from './../../shared/models/BookListItems';
 
-
-export interface ModalData{
-  bookId:number
+// type of data passed to a modal window
+export interface ModalData {
+  bookId: number
 }
 
 @Component({
@@ -18,17 +17,17 @@ export interface ModalData{
 export class BookListItemComponent {
 
   @Output() idEmitter: EventEmitter<number> = new EventEmitter<number>;
-  @Input() book:BookListItem | undefined;
+  @Input() book: BookListItem | undefined;
 
-  constructor(public dialog: MatDialog, public imageSanitizer: ImageSanitizerService) {}
+  constructor(public dialog: MatDialog, public imageSanitizer: ImageSanitizerService) { }
 
-  setEditId(id: number) {
+  public setEditId(id: number) {
     this.idEmitter.emit(id);
   }
 
-  openDialog(): void {
+  public openDialog(): void {
     this.dialog.open(ViewBookComponent, {
-      data: {bookId: this.book?.id},
+      data: { bookId: this.book?.id } as ModalData,
     });
   }
 }

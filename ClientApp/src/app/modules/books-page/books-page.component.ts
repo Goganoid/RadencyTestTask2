@@ -16,7 +16,7 @@ export class BooksPageComponent implements OnInit {
 
   constructor(private bookService: BookService) { }
   
-  public setEmitId(id: number) {
+  public setEditId(id: number) {
     this.id = id;
   }
   public resetEditId() {

@@ -1,7 +1,7 @@
-import { BookListItem } from './../../shared/models/BookListItems';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { BookService } from 'src/app/shared/services/book.service';
 import { Observable } from 'rxjs';
+import { BookService } from 'src/app/shared/services/book.service';
+import { BookListItem } from './../../shared/models/BookListItems';
 
 @Component({
   selector: 'app-book-list',
@@ -16,7 +16,7 @@ export class BookListComponent implements OnInit {
 
   constructor(private bookService: BookService) { }
 
-  setEmitId(id: number) {
+  public setEditId(id: number) {
     this.idEmitter.emit(id);
   }
 

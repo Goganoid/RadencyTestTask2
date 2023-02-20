@@ -1,12 +1,10 @@
-import { BookDetails } from './../../shared/models/BookDetails';
-import { BookService } from 'src/app/shared/services/book.service';
-import { ModalData } from './../book-list-item/book-list-item.component';
-import { Component, Inject, Input, OnInit, Sanitizer } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { BookListItem } from 'src/app/shared/models/BookListItems';
 import { Observable } from 'rxjs';
-import { DomSanitizer } from '@angular/platform-browser';
+import { BookService } from 'src/app/shared/services/book.service';
 import { ImageSanitizerService } from 'src/app/shared/services/image-sanitizer.service';
+import { BookDetails } from './../../shared/models/BookDetails';
+import { ModalData } from './../book-list-item/book-list-item.component';
 
 @Component({
   selector: 'app-view-book',
@@ -23,7 +21,7 @@ export class ViewBookComponent {
   ) {
     this.book$ = this.bookService.getBook(this.data.bookId);
   }
-  onCloseClick(): void {
+  public onCloseClick(): void {
     this.dialogRef.close();
   }
 }

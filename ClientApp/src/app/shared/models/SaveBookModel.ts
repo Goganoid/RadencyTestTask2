@@ -1,4 +1,4 @@
-export interface SaveBook {
+export interface SaveBookModel {
     id?: number;
     title: string;
     cover: string;

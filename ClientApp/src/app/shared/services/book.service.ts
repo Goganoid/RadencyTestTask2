@@ -7,36 +7,38 @@ import { BookDetails } from '../models/BookDetails';
 import { IdResponse } from '../models/IdResponse';
 import { ValidationError } from '../models/ValidationError';
 import { BookListItem } from './../models/BookListItems';
-import { SaveBook } from './../models/SaveBook';
+import { SaveBookModel } from '../models/SaveBookModel';
+// HTTP client
 @Injectable({
   providedIn: 'root'
 })
 export class BookService {
 
   private baseApiUri = 'http://localhost:5000/api/';
+
   constructor(private httpClient: HttpClient, private snackBar: MatSnackBar) { }
-  getBooks(): Observable<BookListItem[]> {
+  public getBooks(): Observable<BookListItem[]> {
     return this.httpClient
       .get<BookListItem[]>(this.baseApiUri + 'books?order=title')
       .pipe(catchError((err, _) => {
         return this.handleError(err, this.defaultErrorMessage(err.status));
       }));
   }
-  getRecommendedBooks(): Observable<BookListItem[]> {
+  public getRecommendedBooks(): Observable<BookListItem[]> {
     return this.httpClient
       .get<BookListItem[]>(this.baseApiUri + 'books/recommended')
       .pipe(catchError((err, _) => {
         return this.handleError(err,this.defaultErrorMessage(err.status));
       }));
   }
-  getBook(id: number): Observable<BookDetails> {
+  public getBook(id: number): Observable<BookDetails> {
     return this.httpClient
       .get<BookDetails>(this.baseApiUri + `books/${id}`)
       .pipe(catchError((err, _) => {
         return this.handleError(err, this.defaultErrorMessage(err.status));
       }));
   }
-  saveBook(bookModel: SaveBook): Observable<IdResponse> {
+  public saveBook(bookModel: SaveBookModel): Observable<IdResponse> {
     return this.httpClient
       .post<IdResponse>(this.baseApiUri + "books/save", JSON.stringify(bookModel), {
       headers: new HttpHeaders({

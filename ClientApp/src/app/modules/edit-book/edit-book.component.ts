@@ -1,13 +1,10 @@
 import { MaxSizeValidator } from '@angular-material-components/file-input';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { SnackBarError } from 'src/app/shared/config/snackbar.config';
-import { ValidationError } from 'src/app/shared/models/ValidationError';
 import { BookService } from 'src/app/shared/services/book.service';
-import { genreOptions } from 'src/assets/constants';
+import { genreOptions } from 'src/app/shared/constants/constants';
+import { SaveBookModel } from '../../shared/models/SaveBookModel';
 import { BookDetails } from './../../shared/models/BookDetails';
-import { SaveBook } from './../../shared/models/SaveBook';
 
 @Component({
   selector: 'app-edit-book',
@@ -20,6 +17,7 @@ export class EditBookComponent {
   @Input() set setEditId(val: number | undefined) {
     this.editId = val;
     if (this.editId == undefined) return;
+    // set book info for further editing
     this.bookService.getBook(this.editId!).subscribe(bookDetails => {
       this.setBook(bookDetails);
     });
@@ -38,14 +36,7 @@ export class EditBookComponent {
     ])
   });
 
-  constructor(private bookService: BookService, private snackBar: MatSnackBar) { }
-
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   if (changes['editId'].isFirstChange() || changes['editId'].currentValue == undefined) return;
-  //   this.bookService.getBook(this.editId!).subscribe(bookDetails => {
-  //     this.setBook(bookDetails);
-  //   });
-  // }
+  constructor(private bookService: BookService) { }
 
   public imgInputChange(fileInputEvent: any) {
     this.formGroup.controls['file'].markAllAsTouched();
@@ -66,13 +57,13 @@ export class EditBookComponent {
         this.resetForm();
       });
     }
-      reader.readAsDataURL(this.formGroup.controls['file'].value);
+    reader.readAsDataURL(this.formGroup.controls['file'].value);
   }
   public resetForm() {
     this.formGroup.reset();
     this.resetEditId.emit();
   }
-  private constructSaveBookModel(base64Img: string): SaveBook {
+  private constructSaveBookModel(base64Img: string): SaveBookModel {
     return {
       author: this.formGroup.controls.author.value,
       content: this.formGroup.controls.content.value,
@@ -80,9 +71,9 @@ export class EditBookComponent {
       title: this.formGroup.controls.title.value,
       cover: base64Img,
       id: this.editId
-    } as SaveBook
+    } as SaveBookModel
   }
-  
+
   private setBook(bookDetails: BookDetails) {
     this.formGroup.patchValue({
       'title': bookDetails.title,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-
+// Bypass angular base64 protection
 @Injectable({
   providedIn: 'root'
 })
