@@ -6,6 +6,7 @@ using Application.Core;
 using FluentValidation;
 using Persistence;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,16 +49,17 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<DataContext>();
+    if (context.Database.GetPendingMigrations().Any())
+    {
+        context.Database.Migrate();
+    }
     Seed.SeedData(context);
 }
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpLogging();
 app.ConfigureExceptionHandler();

@@ -17,6 +17,7 @@ public class DataContext : DbContext
         base.OnConfiguring(optionsBuilder);
         optionsBuilder.UseNpgsql(
             _configuration.GetConnectionString("PostgresConnection"));
+        // optionsBuilder.UseInMemoryDatabase(databaseName:"Test");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
