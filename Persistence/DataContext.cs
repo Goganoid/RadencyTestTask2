@@ -1,18 +1,22 @@
 using Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Persistence;
 
 public class DataContext : DbContext
 {
-    public DataContext(DbContextOptions options) : base(options)
+    private readonly IConfiguration _configuration;
+    public DataContext(DbContextOptions options,IConfiguration configuration) : base(options)
     {
+        _configuration = configuration;
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
-        optionsBuilder.UseInMemoryDatabase("BookStore");
+        optionsBuilder.UseNpgsql(
+            _configuration.GetConnectionString("PostgresConnection"));
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

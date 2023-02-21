@@ -56,6 +56,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non lacus at magna 
 
     public static void SeedData(DataContext dataContext)
     {
+        if(dataContext.Books.Any()) return;
         var books = Enumerable.Range(0, 20).Select(_ => CreateBook()).ToList();
         dataContext.AddRange(books);
         dataContext.SaveChanges();
