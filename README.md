@@ -1,5 +1,7 @@
-# RadencyTestTask3
-You can import a postman collection from `postman.json`
+# RadencyTestTask6
+
+Was already using Angular Material in Task 3 
+
 ## Starting the server
 ```
 cd API/
