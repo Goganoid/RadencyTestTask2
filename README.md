@@ -1,5 +1,7 @@
-# RadencyTestTask3
-You can import a postman collection from `postman.json`
+# RadencyTestTask4
+
+Added postgresql
+
 ## Starting the server
 ```
 cd API/
