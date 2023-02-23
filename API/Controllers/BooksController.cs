@@ -1,8 +1,8 @@
-using Application.Books;
-using Application.Books.DTO;
-using Application.Books.DTO.Requests;
-using Application.Books.Validation;
+using Application.Books.Commands;
+using Application.Books.Commands.Books;
+using Application.Books.Queries;
 using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -11,28 +11,28 @@ namespace API.Controllers;
 [Route("api/books")]
 public class BooksController : ControllerBase
 {
-    private readonly BookService _bookService;
+    private readonly IMediator _mediator;
     private readonly IConfiguration _configuration;
     private readonly IValidator<SaveBookRequestDTO> _bookValidator;
     private readonly IValidator<SaveReviewRequestDTO> _reviewValidator;
     private readonly IValidator<RateBookRequestDTO> _scoreValidator;
 
-    public BooksController(BookService bookService, IConfiguration configuration,
+    public BooksController(IConfiguration configuration,
         IValidator<SaveBookRequestDTO> bookValidator, IValidator<SaveReviewRequestDTO> reviewValidator,
-        IValidator<RateBookRequestDTO> scoreValidator)
+        IValidator<RateBookRequestDTO> scoreValidator, IMediator mediator)
     {
-        _bookService = bookService;
         _configuration = configuration;
         _bookValidator = bookValidator;
         _reviewValidator = reviewValidator;
         _scoreValidator = scoreValidator;
+        _mediator = mediator;
     }
 
     [HttpGet]
     [Route("")]
     public async Task<IActionResult> GetBooks([FromQuery] BookOrderOptions order)
     {
-        var books = await _bookService.GetBooks(order);
+        var books = await _mediator.Send(new GetBooksQuery(order));
         return Ok(books);
     }
 
@@ -40,7 +40,7 @@ public class BooksController : ControllerBase
     [Route("recommended")]
     public async Task<IActionResult> GetRecommendedBooks([FromQuery] string? genre)
     {
-        var books = await _bookService.GetRecommendedBooks(genre);
+        var books = await _mediator.Send(new GetRecommendedBooksQuery(genre));
         return Ok(books);
     }
 
@@ -48,7 +48,7 @@ public class BooksController : ControllerBase
     [Route("{bookId:int}")]
     public async Task<IActionResult> GetBookDetails(int bookId)
     {
-        var books = await _bookService.GetBookDetails(bookId);
+        var books = await _mediator.Send(new GetBookQuery(bookId));
         return Ok(books);
     }
 
@@ -57,7 +57,7 @@ public class BooksController : ControllerBase
     public async Task<IActionResult> DeleteBook(int bookId, [FromQuery] string secret)
     {
         if (_configuration["SecretKey"] != secret) return Unauthorized();
-        await _bookService.DeleteBook(bookId);
+        await _mediator.Send(new DeleteBookCommand(bookId));
         return Ok();
     }
 
@@ -67,7 +67,7 @@ public class BooksController : ControllerBase
     {
         var result = await _bookValidator.ValidateAsync(saveBookRequestDTO);
         if (!result.IsValid) return BadRequest(result.Errors);
-        var id = await _bookService.SaveBook(saveBookRequestDTO);
+        var id = await _mediator.Send(new SaveBookCommand(saveBookRequestDTO));
         return Ok(id);
     }
 
@@ -77,7 +77,7 @@ public class BooksController : ControllerBase
     {
         var result = await _reviewValidator.ValidateAsync(saveReviewRequestDTO);
         if (!result.IsValid) return BadRequest(result.Errors);
-        var id = await _bookService.SaveReview(bookId, saveReviewRequestDTO);
+        var id = await _mediator.Send(new SaveReviewCommand(bookId, saveReviewRequestDTO));
         return Ok(id);
     }
 
@@ -87,7 +87,7 @@ public class BooksController : ControllerBase
     {
         var result = await _scoreValidator.ValidateAsync(rateBookRequestDTO);
         if (!result.IsValid) return BadRequest(result.Errors);
-        await _bookService.RateBook(bookId, rateBookRequestDTO);
+        await _mediator.Send(new RateBookCommand(bookId, rateBookRequestDTO));
         return Ok();
     }
 }

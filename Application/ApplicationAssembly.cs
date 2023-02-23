@@ -1,4 +1,4 @@
-namespace Application;
+namespace Application.Books.Commands;
 
 public class ApplicationAssembly
 {

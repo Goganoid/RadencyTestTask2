@@ -1,8 +1,9 @@
 using API.Extensions;
 using API.Middlewares;
-using Application;
-using Application.Books;
-using Application.Core;
+using Application.Books.Commands;
+using Application.Books.Commands.Books;
+using Application.Books.Commands.Core;
+using Application.Common;
 using FluentValidation;
 using Persistence;
 using Microsoft.AspNetCore.HttpLogging;
@@ -12,13 +13,16 @@ var builder = WebApplication.CreateBuilder(args);
 if (builder.Configuration["SecretKey"] == null) throw new ArgumentException("SecretKey is not set");
 
 // Add services to the container.
+builder.Services.AddMediatR(cfg=>
+    cfg.RegisterServicesFromAssemblyContaining(typeof(ApplicationAssembly)));
+
+
 builder.Services.AddTransient<ExceptionMiddleware>();
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 builder.Services.AddControllers();
 builder.Services.AddValidatorsFromAssemblyContaining(typeof(ApplicationAssembly));
 builder.Services.AddDbContext<DataContext>();
 builder.Services.AddSingleton<DapperContext>();
-builder.Services.AddTransient<BookService>();
 // Add HTTP logging
 const HttpLoggingFields requestLogs = HttpLoggingFields.RequestMethod | HttpLoggingFields.RequestHeaders |
                                       HttpLoggingFields.RequestQuery | HttpLoggingFields.RequestBody;

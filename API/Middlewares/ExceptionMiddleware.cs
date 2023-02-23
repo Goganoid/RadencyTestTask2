@@ -1,7 +1,7 @@
 using System.Net;
 using System.Text.Json;
 using API.Models;
-using Application.Core.Exceptions;
+using Application.Books.Commands.Core.Exceptions;
 
 namespace API.Middlewares;
 
