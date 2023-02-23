@@ -2,7 +2,7 @@ namespace Application.Books.DTO.Responses;
 
 public class ListedBookResponseDTO
 {
-    public int Id { get; set; }
+    public int BookId { get; set; }
     public required string Title { get; set; }
     public required string Author { get; set; }
     public required string Cover { get; set; }

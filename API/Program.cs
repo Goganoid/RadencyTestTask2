@@ -17,6 +17,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 builder.Services.AddControllers();
 builder.Services.AddValidatorsFromAssemblyContaining(typeof(ApplicationAssembly));
 builder.Services.AddDbContext<DataContext>();
+builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddTransient<BookService>();
 // Add HTTP logging
 const HttpLoggingFields requestLogs = HttpLoggingFields.RequestMethod | HttpLoggingFields.RequestHeaders |

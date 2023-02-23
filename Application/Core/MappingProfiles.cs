@@ -19,8 +19,10 @@ public class MappingProfiles : Profile
             .ForMember(dto => dto.Rating,
                 opt => opt.MapFrom(b => b.AverageScore()));
         CreateMap<Review, ReviewResponseDTO>();
-        CreateMap<Review, IdResponseDTO>();
-        CreateMap<Book, IdResponseDTO>();
+        CreateMap<Review, IdResponseDTO>().ForMember(dto => dto.Id,
+            opt=>opt.MapFrom(r=>r.ReviewId));
+        CreateMap<Book, IdResponseDTO>().ForMember(dto => dto.Id,
+            opt=>opt.MapFrom(b=>b.BookId));
 
         // Input DTOs
         CreateMap<SaveBookRequestDTO, Book>();

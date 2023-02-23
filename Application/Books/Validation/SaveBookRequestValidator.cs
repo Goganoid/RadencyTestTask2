@@ -15,9 +15,9 @@ public class SaveBookRequestValidator : AbstractValidator<SaveBookRequestDTO>
     public SaveBookRequestValidator(DataContext dataContext)
     {
         _dataContext = dataContext;
-        RuleFor(b => b.Id)
+        RuleFor(b => b.BookId)
             .MustAsync(async (id, token) => await HaveValidId(id!.Value))
-            .When(b => b.Id != null)
+            .When(b => b.BookId != null)
             .WithMessage("The book with given id does not exist");
         RuleFor(b => b.Author).NotNull().Length(4, 50);
         RuleFor(b => b.Content).NotNull().Length(25, 3000);
@@ -46,7 +46,7 @@ public class SaveBookRequestValidator : AbstractValidator<SaveBookRequestDTO>
 
     private async Task<bool> HaveValidId(int bookId)
     {
-        var book = await _dataContext.Books.FirstOrDefaultAsync(b => b.Id == bookId);
+        var book = await _dataContext.Books.FirstOrDefaultAsync(b => b.BookId == bookId);
         return book != null;
     }
 }
