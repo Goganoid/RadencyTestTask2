@@ -1,5 +1,5 @@
 export interface Review {
-    id: number;
+    reviewId: number;
     message: string;
     reviewer: string;
 }

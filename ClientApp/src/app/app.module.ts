@@ -1,3 +1,4 @@
+import { newBookIdReducer } from './store/new-book-id.reducer';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -24,6 +25,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { BooksPageComponent } from './modules/books-page/books-page.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar'; 
 import { ErrorMessageComponent } from './modules/edit-book/components/error-message/error-message.component';
+import { StoreModule } from '@ngrx/store';
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,7 +53,9 @@ import { ErrorMessageComponent } from './modules/edit-book/components/error-mess
     MatFormFieldModule,
     HttpClientModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot({id:newBookIdReducer})
   ],
   providers: [],
   bootstrap: [AppComponent]

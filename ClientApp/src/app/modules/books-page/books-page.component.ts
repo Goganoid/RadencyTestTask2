@@ -9,19 +9,11 @@ import { BookListItem } from './../../shared/models/BookListItems';
   styleUrls: ['./books-page.component.css']
 })
 export class BooksPageComponent implements OnInit {
-  public id: number | undefined;
 
   public books$: Observable<BookListItem[]> | undefined;
   public recommendedBooks$: Observable<BookListItem[]> | undefined;
 
   constructor(private bookService: BookService) { }
-  
-  public setEditId(id: number) {
-    this.id = id;
-  }
-  public resetEditId() {
-    this.id = undefined;
-  }
   ngOnInit(): void {
     this.updateLists();
   }

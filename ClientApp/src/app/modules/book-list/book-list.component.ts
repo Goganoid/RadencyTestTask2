@@ -9,11 +9,6 @@ import { BookListItem } from './../../shared/models/BookListItems';
 })
 export class BookListComponent {
 
-  @Output() idEmitter: EventEmitter<number> = new EventEmitter<number>;
   @Input() books$: Observable<BookListItem[]> | undefined;
   @Input() recommendedBooks$: Observable<BookListItem[]> | undefined;
-
-  public setEditId(id: number) {
-    this.idEmitter.emit(id);
-  }
 }

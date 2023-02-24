@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { MaxSizeValidator } from '@angular-material-components/file-input';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -5,6 +6,8 @@ import { BookService } from 'src/app/shared/services/book.service';
 import { genreOptions } from 'src/app/shared/constants/constants';
 import { SaveBookModel } from '../../shared/models/SaveBookModel';
 import { BookDetails } from './../../shared/models/BookDetails';
+import { Store } from '@ngrx/store';
+import { resetId } from 'src/app/store/new-book-id.actions';
 
 @Component({
   selector: 'app-edit-book',
@@ -12,16 +15,7 @@ import { BookDetails } from './../../shared/models/BookDetails';
   styleUrls: ['./edit-book.component.css']
 })
 export class EditBookComponent {
-  public editId: number | undefined;
-  @Output() resetEditId = new EventEmitter();
-  @Input() set setEditId(val: number | undefined) {
-    this.editId = val;
-    if (this.editId == undefined) return;
-    // set book info for further editing
-    this.bookService.getBook(this.editId!).subscribe(bookDetails => {
-      this.setBook(bookDetails);
-    });
-  }
+  public editId = 0;
   @Output() updateListEmitter = new EventEmitter();
   public genres = genreOptions;
   public formGroup = new FormGroup({
@@ -36,7 +30,16 @@ export class EditBookComponent {
     ])
   });
 
-  constructor(private bookService: BookService) { }
+  constructor(private bookService: BookService, private store: Store<{ id: number }>) {
+    store.select('id').subscribe((newId) => {
+      this.editId = newId;
+      if (this.editId == 0) return;
+      // set book info for further editing
+      this.bookService.getBook(this.editId!).subscribe(bookDetails => {
+        this.setBook(bookDetails);
+      });
+    });
+  }
 
   public imgInputChange(fileInputEvent: any) {
     this.formGroup.controls['file'].markAllAsTouched();
@@ -61,7 +64,7 @@ export class EditBookComponent {
   }
   public resetForm() {
     this.formGroup.reset();
-    this.resetEditId.emit();
+    this.store.dispatch(resetId());
   }
   private constructSaveBookModel(base64Img: string): SaveBookModel {
     return {
@@ -70,7 +73,7 @@ export class EditBookComponent {
       genre: this.formGroup.controls.genre.value,
       title: this.formGroup.controls.title.value,
       cover: base64Img,
-      id: this.editId
+      bookId: this.editId!=0 ? this.editId : undefined
     } as SaveBookModel
   }
 

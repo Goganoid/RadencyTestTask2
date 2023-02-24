@@ -38,7 +38,7 @@ public class GetBooks : IRequestHandler<GetBooksQuery,IEnumerable<ListedBookResp
         var bookDictionary = new Dictionary<int, Book>();
         using var connection = _dapperContext.CreateConnection();
         var booksQuery = await connection.QueryAsync<Book, Rating, Book>(
-            """ SELECT * FROM "Books" as b LEFT JOIN "Ratings" as r ON b."BookId"=r."BookId"  ORDER BY @order """,
+            $""" SELECT * FROM "Books" as b LEFT JOIN "Ratings" as r ON b."BookId"=r."BookId"  ORDER BY "{SelectOrderProperty()}" """,
             ((book, rating) =>
             {
                 if (!bookDictionary.TryGetValue(book.BookId, out var bookEntry))
@@ -50,7 +50,7 @@ public class GetBooks : IRequestHandler<GetBooksQuery,IEnumerable<ListedBookResp
 
                 bookEntry.Ratings.Add(rating);
                 return bookEntry;
-            }), new {order = SelectOrderProperty()}, splitOn: """ RatingId """);
+            }), splitOn: """ RatingId """);
         var books = booksQuery.Distinct().ToList();
         return books.Select(b => _mapper.Map<ListedBookResponseDTO>(b));
     }
