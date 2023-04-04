@@ -1,4 +1,7 @@
 # RadencyTestTask2
+## [Task 2](https://docs.google.com/document/d/1ZbKie3rOOmcNqeoN1W3Cvtz8MaEbkUQYKsAzt4nSnDs/edit?usp=sharing)
+## [Task 3](https://docs.google.com/document/d/13xa9gmevlFB3AvkGFXqF9MhDPAcuFntN8xaaYxp_4qM/edit?usp=sharing)
+## [Additional tasks](https://docs.google.com/document/d/1KU-eHubGFQCq_AJdL2QCsrQLR3wRUHCfvBEg_retbD8/edit?usp=sharing)
 You can import a postman collection from `postman.json`
 ## Starting the server
 ```
